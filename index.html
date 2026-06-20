@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kanban_board</title>
     <!-- font -->
      <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,13 +17,106 @@
         <h1>My tasks</h1> 
     </header>
     <div class="board">
-    <div class="columm" id="todo"> 
+
+    <div class="column" id="todo"> 
         <h2>todo</h2>
+        <hr />
+
+        <div class="task-in-btn">
+            <input type="text" id="taskInput" class="task-input" placeholder="input task...." oninput="console.log('capitalize')">
+            <button class="add-task-btn" onclick="addTask('todo')"> add task</button>
+        </div>
+        <div class="tasks-container" ondrop="console.log('ondrop')" ondragover="console.log('ondragover ')"></div>
+        </div>
+
+    <div class="column" id="inprogress"> 
+        <h2>in-progress</h2> 
+        <hr />
+        <div class="tasks-container" ondrop="console.log('ondrop')" ondragover="console.log('ondragover ')"></div>
+         </div>
+
+    <div class="column" id="done">
+        <h2>done</h2>
+        <hr />
+        <div class="tasks-container" ondrop="console.log('ondrop')" ondragover="console.log('ondragover ')"></div> 
+         </div>
     </div>
-    <div class="columm" id="inprogress">
-        <h2>in-progress</h2>
-    </div>
-    <div class="columm" id="done"><h2>done</h2></div>
-    </div>
+
+
+    <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+document.addEventListener('DOMContentLoaded', renderTasks);
+
+function renderTasks() {
+    const columns = ['todo', 'inprogress', 'done'];
+
+    columns.forEach(columnId => {
+        const column = document.getElementById(columnId);
+
+        const container = column.querySelector('.tasks-container');
+        container.innerHTML = "";
+
+        tasks.forEach(task => {
+            if (task.status === columnId) {
+                const taskEl = createTaskElement(task.content, task.id);
+                container.appendChild(taskEl);
+            }
+        });
+    });
+}
+
+
+// create task element
+function createTaskElement(content, id) {
+    const task = document.createElement('div');
+    task.id = id;
+    task.className = "task";
+    task.draggable = true;
+
+    task.innerHTML = `
+        ${content}
+        <span class="delete-btn" onclick="console.log('delete task')">
+            ❌
+        </span>
+    `;
+
+    return task;
+}
+
+
+// add task
+function addTask(columnId) {
+    const taskInput = document.getElementById('taskInput');
+    const taskContent = taskInput.value.trim();
+
+    if (taskContent !== "") {
+        const newTask = {
+            id: `task-${Date.now()}`,
+            content: taskContent,
+            status: columnId
+        };
+
+        tasks.push(newTask);
+        updateLocalStorage();
+        renderTasks();
+
+        taskInput.value = "";
+    }
+}
+
+
+// save to localStorage
+function updateLocalStorage() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+    
+    
+    
+
+
+    </script>
+
 </body>
 </html>

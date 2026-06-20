@@ -10,7 +10,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* flex-wrap: wrap; */
     padding: 20px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -23,13 +22,30 @@ body {
 }
 
 .column{
-    /* width: 30%; */
   width: calc(100% - 30px);
   max-width: 400px;
   margin: 10px;
-  background-color: #e15151;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 
+}
+
+
+.add-task-btn {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  /* Adjust padding to make 
+  the button smaller */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  /* Decrease font size */
+  border-radius: 5px;
+  /* Adjust border radius 
+  for a softer look */
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
